@@ -1,9 +1,39 @@
+import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
+import BuildGallery from '@/components/BuildGallery';
+import CustomProfile from '@/components/CustomProfile';
+import ProfileModal from '@/components/ProfileModal';
 
 const Index = () => {
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [userProfile, setUserProfile] = useState({
+    id: '1',
+    username: 'Sazuke_',
+    avatar: '/api/placeholder/100/100',
+    level: 45,
+    rank: 'Владелец',
+    xp: 8750,
+    maxXp: 10000,
+    achievements: 12,
+    builds: 23,
+    background: {
+      id: 'cyber-matrix',
+      name: 'Кибер матрица',
+      gradient: 'linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%)',
+      pattern: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 255, 136, 0.1) 2px, rgba(0, 255, 136, 0.1) 4px)'
+    },
+    theme: {
+      id: 'neon-green',
+      name: 'Неоновый зелёный',
+      colors: { primary: '#00FF88', secondary: '#00CC6A', accent: '#88FFB8' }
+    },
+    status: 'online' as const,
+    title: 'Основатель гильдии XTRA',
+    joinDate: 'Январь 2023'
+  });
   const guildMembers = [
     { name: "Sazuke_", rank: "Владелец", status: "online" },
     { name: "_user1945", rank: "Билдер", status: "online" },
@@ -129,6 +159,18 @@ const Index = () => {
           ))}
         </div>
 
+        {/* Custom Profile Section */}
+        <div className="mb-16">
+          <h2 className="text-4xl font-bold mb-8 text-center font-['Orbitron'] text-primary">Профиль лидера</h2>
+          <div className="max-w-2xl mx-auto">
+            <CustomProfile 
+              profile={userProfile}
+              isOwn={true}
+              onEditProfile={() => setShowProfileModal(true)}
+            />
+          </div>
+        </div>
+
         {/* Guild Members Section */}
         <div className="mb-16">
           <h2 className="text-4xl font-bold mb-8 text-center font-['Orbitron'] text-primary">Участники гильдии</h2>
@@ -217,6 +259,17 @@ const Index = () => {
           </Card>
         </div>
       </div>
+
+      {/* Build Gallery */}
+      <BuildGallery />
+
+      {/* Profile Modal */}
+      <ProfileModal
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+        profile={userProfile}
+        onSave={(profile) => setUserProfile(profile)}
+      />
 
       {/* Footer */}
       <footer className="bg-dark-surface border-t border-border py-8">
